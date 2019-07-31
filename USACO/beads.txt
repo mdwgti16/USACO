@@ -6,65 +6,48 @@ PROG: beads
 fin = open('beads.in','r')
 bNum = int(fin.readline())
 beads = fin.readline().strip()
-beads+=beads
+
+pre = ppre = ''
 i=0
-pre = beads[0]
-ppre=''
-beadList = []
-temp = ''
-wn=0
-wi=-1
-
-
-
+cnt = wcnt = 0
+bMax = left = 0
+isSecond=False
 while True:
-    if(pre==beads[i]):
-        if(beads[i]=='w'):
-            wn+=1
-        else:
-            temp+=pre
-    else:
-        if(pre!='w' and beads[i]=='w'):
-            ppre=pre
-            pre=beads[i]
-            wn=1
-                
-        elif(pre=='w' and beads[i]!='w'):
-            pre=beads[i]
-            if(ppre==beads[i]):
-                temp+='w'*wn + pre
-                wn=0
-            else:
-                if(temp!=''):
-                    temp+='w'*wn
-                    beadList.append(temp)    
-                temp='w'*wn + pre
-                ppre=pre
-                wn=0
-        else:
-            beadList.append(temp)
-            if(i>=bNum):
-                break
-            
-            pre=beads[i]
-            temp=pre
-            ppre=pre
-    i+=1
-
-max = 0
-for i in range(len(beadList)-1):
-    if(beadList[i][-1]==beadList[i+1][0]):
-        temp1=len(beadList[i].replace("w",""))+len(beadList[i+1])
-        temp2=len(beadList[i])+len(beadList[i+1].replace("w",""))
     
-        if(temp1>temp2):
-            if(max<temp1):
-                max =temp1
+    if beads[i] != pre:
+        if beads[i] == 'w':
+            wcnt=1
         else:
-            if(max<temp2):
-                max =temp2
-          
-    elif(max<len(beadList[i])+len(beadList[i+1])):
-            max =len(beadList[i])+len(beadList[i+1])
+            if beads[i] == ppre:
+                cnt=cnt+wcnt+1
+                wcnt=0
+            else:
+                ppre=beads[i]
+                if left+cnt+wcnt>bMax:
+                    bMax=left+cnt+wcnt
+                if isSecond:
+                    break
+                    
+                left=cnt
+                
+                if pre == 'w':
+                    cnt=wcnt+1
+                    wcnt=0
+                else:
+                    cnt=1
+            
+        pre=beads[i]
+    else:           
+        if beads[i] == 'w':
+            wcnt+=1
+        else:
+            cnt+=1
+    i+=1   
+    if i==bNum:
+        if (cnt+wcnt) == (bNum*2):
+            bMax=bNum
+            break
+        i=0
+        isSecond=True
 with open('beads.out','w') as fout:
-    fout.write("{}\n".format(max))
+    fout.write(f"{bMax}\n")
