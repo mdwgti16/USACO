@@ -1,0 +1,39 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: milk2
+"""
+def sortKeyGen(line):
+    if line:
+        start,end=map(int,line.strip().split(" "))
+        return start
+fin = open('milk2.in','r')
+nCows = int(fin.readline().strip())
+times = fin.read().split('\n')
+times = list(filter(None, times))
+times.sort(key=sortKeyGen)
+mStart,mEnd = map(int,times[0].strip().split(" "))
+iEnd = 0
+tStart,tEnd = 0,0
+
+longestC = mEnd-mStart
+longestI = 0
+
+for time in times:
+    if time:
+        start, end = map(int,time.strip().split(" "))
+        
+        if start-mEnd >= longestI :
+            longestI = start-mEnd
+            iEnd = end
+        
+        if mStart<=start and start<=mEnd:
+            if mEnd<end:
+                mEnd=end
+        else:
+            if mEnd-mStart > longestC:
+                longestC = mEnd-mStart
+            mStart,mEnd = start,end
+    
+with open('milk2.out','w') as fout:
+    fout.write(f"{longestC} {longestI}\n")
