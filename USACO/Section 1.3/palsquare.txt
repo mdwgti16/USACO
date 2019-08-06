@@ -1,0 +1,35 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: palsquare
+"""
+nList=[n for n in range(10)]
+nList.extend([chr(n) for n in range(ord('A'),ord('A')+10)])
+
+def convert(num,base):
+    t=[]
+    while True:
+        if num>=base:
+            q,r=divmod(num,base)
+            num=q
+            t.append(nList[r])
+        else:
+            t.append(nList[num])
+            break
+    return ''.join(str(e) for e in t)[::-1]
+
+with open('palsquare.in','r') as f:
+    base = int(f.readline().strip())
+    
+pDict={}
+num=1
+
+while num<=300:
+    square = str(convert(num**2,base))
+    if square == square[::-1] :
+        pDict[convert(num,base)]=square
+    num+=1
+    
+with open('palsquare.out','w') as f:
+    for k, v in pDict.items():
+        f.write(f'{k} {v}\n')
