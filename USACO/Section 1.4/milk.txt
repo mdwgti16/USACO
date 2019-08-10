@@ -1,0 +1,31 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: milk
+"""
+def sortKeyGen(line):
+    if line:
+        price,amount=map(int,line.strip().split(" "))
+        return price
+fin = open('milk.in','r')
+milk, n = map(int,fin.readline().strip().split())
+unitList = fin.read().split('\n')
+unitList = list(filter(None, unitList))
+
+unitList.sort(key=sortKeyGen)
+
+pay=0
+for unit in unitList:
+    if unit:
+        price,amount=map(int,unit.strip().split(" "))
+        if milk==0:
+            break
+        if milk>=amount:
+            milk-=amount
+            pay+=price*amount
+        else:
+            pay+=price*milk
+            milk=0
+        
+with open('milk.out','w') as fout:
+    fout.write(f"{pay}\n")

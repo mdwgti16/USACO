@@ -13,7 +13,6 @@ times = fin.read().split('\n')
 times = list(filter(None, times))
 times.sort(key=sortKeyGen)
 mStart,mEnd = map(int,times[0].strip().split(" "))
-iEnd = 0
 tStart,tEnd = 0,0
 
 longestC = mEnd-mStart
@@ -23,17 +22,18 @@ for time in times:
     if time:
         start, end = map(int,time.strip().split(" "))
         
-        if start-mEnd >= longestI :
-            longestI = start-mEnd
-            iEnd = end
-        
         if mStart<=start and start<=mEnd:
             if mEnd<end:
                 mEnd=end
         else:
+            if start-mEnd >= longestI :
+                longestI = start-mEnd
+                
             if mEnd-mStart > longestC:
                 longestC = mEnd-mStart
             mStart,mEnd = start,end
+            
+            
     
 with open('milk2.out','w') as fout:
     fout.write(f"{longestC} {longestI}\n")
