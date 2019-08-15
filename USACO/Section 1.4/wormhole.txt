@@ -1,0 +1,48 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: wormhole
+"""
+def getKey(s):
+    n1,n2=map(int,s.strip().split(" "))
+    return n2
+fin = open('wormhole.in','r')
+N = int(fin.readline().strip())
+
+wh= [l.strip() for l in fin.readlines()]
+
+# wh.sort(key=getKey)
+# wh.reverse()
+total=0
+twoDict={}
+for p in wh:
+    if p:
+        x,y=map(int, p.strip().split(" "))
+
+        twoDict[y]=0
+        cnt=0
+        for w in wh:
+            if w.strip().endswith(f"{y}"):
+                cnt+=1
+            if cnt!=1:
+                isOne=False
+        if cnt>1:
+            twoDict[y]+=cnt
+
+for k,v in twoDict.items():
+    if v>1:
+        t=0
+        for i in range(v-1,0,-1):
+            t+=i
+        n=N
+        temp=t
+        if v%2==1:
+            n+=1
+        while n-v>4:
+            temp*=n-v-1
+            n-=2
+        temp*=n-v-1
+        total+=temp
+
+with open('wormhole.out','w') as fout:
+    fout.write(f"{total}\n")
