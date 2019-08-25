@@ -1,0 +1,33 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: ariprog
+"""
+def getKey(s):
+    n1,n2=map(int,s.strip().split(" "))
+    return n2
+fin = open('ariprog.in','r')
+N,M = map(int,fin.readlines())
+
+t={}
+result=set()
+for i in range(0,M**2*2+1):
+    t[i] = 0
+for v in range(0,M+1,2):
+    for i in range(0,M+1):
+        for j in range(0,M+1):
+            if (i**2+j**2)%2!=1:
+                q,r=divmod(i**2+j**2-v,N-1)
+#                 print(i**2+j**2-2,r,q)
+                if q>0:
+                    result.add(f'{r} {q}')
+result=list(result)
+result.sort(key=getKey)
+
+n1,n2=map(int,result[2].strip().split(" "))
+
+result
+
+with open('ariprog.out','w') as fout:
+    for e in result:
+        fout.write(e+'\n')

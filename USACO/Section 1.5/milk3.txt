@@ -1,0 +1,38 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: milk3
+"""
+def getKey(s):
+    n1,n2=map(int,s.strip().split(" "))
+    return n2
+fin = open('milk3.in','r')
+a,b,c = map(int,fin.readline().split(" "))
+result=set()
+
+if c>=a:
+    result.add(c-a)
+    
+if c>=b:
+    result.add(c-b)
+
+if c<=a+b:
+    result.add(a)
+    
+na=0
+while b>na:
+    if na<c:
+        result.add(c-na)
+        result.add(c-(b-na))
+        
+    else:
+        break
+    na+=a
+    
+# result
+
+with open('milk3.out','w') as fout:
+    out=''
+    for e in result:
+        out+=f'{e} '
+    fout.write(out.strip()+"\n")
