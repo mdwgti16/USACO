@@ -5,28 +5,63 @@ PROG: ariprog
 """
 def getKey(s):
     n1,n2=map(int,s.strip().split(" "))
-    return n2
+    return n2, n1
+
 fin = open('ariprog.in','r')
 N,M = map(int,fin.readlines())
 
-t={}
+# ['1 5 9 13 17 ',
+#  '37 41 45 49 53 ',
+#  '2 10 18 26 34 ',
+#  '29 37 45 53 61 ',
+#  '1 13 25 37 49 ',
+#  '5 17 29 41 53 ',
+#  '13 25 37 49 61 ',
+#  '17 29 41 53 65 ',
+#  '5 25 45 65 85 ',
+#  '2 26 50 74 98 ']
+
+sList=set()
 result=set()
-for i in range(0,M**2*2+1):
-    t[i] = 0
-for v in range(0,M+1,2):
-    for i in range(0,M+1):
-        for j in range(0,M+1):
-            if (i**2+j**2)%2!=1:
-                q,r=divmod(i**2+j**2-v,N-1)
-#                 print(i**2+j**2-2,r,q)
-                if q>0:
-                    result.add(f'{r} {q}')
+cnt=0
+
+# for v in range(0,M+1,2):
+for i in range(0,M+1):
+    for j in range(0,M+1):
+        if not i**2+j**2 in sList:
+            q,r=divmod(i**2+j**2,N-1)
+#             if q>0:
+#                 result.add(f'{r} {q}')
+            sList.add(i**2+j**2)
+#             print(i,j,i**2+j**2)
+
+
+t = []
+for e in sList:
+    for s in sList:
+        if e != 0 and s != 0:
+            if e>=N-1:
+                if s<e:
+                    q,r=divmod(e-s,N-1)
+                    if r==0 :
+                        t.append(f'{s} {q}')
+        else:
+            if e%(N-1)==0 and e!=0:
+                t.append(f'{s} {e//(N-1)}')
+                    
+for e in t:
+    s,d = map(int,e.split(' '))
+    for i in range(N):
+        temp=s+d*i
+        if not temp in sList:
+            break
+    else:
+        result.add(e)
 result=list(result)
 result.sort(key=getKey)
 
-n1,n2=map(int,result[2].strip().split(" "))
-
-result
+if len(result)==0:
+    result.append('NONE')
 
 with open('ariprog.out','w') as fout:
     for e in result:

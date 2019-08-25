@@ -16,21 +16,41 @@ if c>=a:
 if c>=b:
     result.add(c-b)
 
-if c<=a+b:
-    result.add(a)
+
+if b>=a:
+    n1,n2=b,a
+    if c<=a+b:
+        result.add(a)
+        result.add(b)
+        result.add(b-a)    
     
-na=0
-while b>na:
-    if na<c:
-        result.add(c-na)
-        result.add(c-(b-na))
+#     else:
+#         n1,n2=a,b
+n=0
+while n1>=n:
+    if n<c:
+#         print(c,n,c-n)
+        result.add(c-n)
+        result.add(c-(n1-n))
+    
         
     else:
         break
-    na+=a
+#     print(n,n2)
+    n+=n2
     
-# result
+# a,b,c,result
+# 0 11 4
+# 4 11 0
+# 0 4 11
+# 5 4 6
+# 0 9 6
+# 5 4 6
 
+# 5 4 6
+# 0 9 6
+# 4_5_6_7_8_9_10_11_12_13_14_15
+# 4 5 6     9 10 11       14 15
 with open('milk3.out','w') as fout:
     out=''
     for e in result:
