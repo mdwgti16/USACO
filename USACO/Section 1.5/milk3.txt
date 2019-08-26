@@ -9,48 +9,30 @@ def getKey(s):
 fin = open('milk3.in','r')
 a,b,c = map(int,fin.readline().split(" "))
 result=set()
-
-if c>=a:
-    result.add(c-a)
-    
-if c>=b:
-    result.add(c-b)
-
-
-if b>=a:
-    n1,n2=b,a
-    if c<=a+b:
-        result.add(a)
-        result.add(b)
-        result.add(b-a)    
-    
-#     else:
-#         n1,n2=a,b
-n=0
-while n1>=n:
-    if n<c:
-#         print(c,n,c-n)
-        result.add(c-n)
-        result.add(c-(n1-n))
-    
-        
-    else:
-        break
-#     print(n,n2)
-    n+=n2
-    
-# a,b,c,result
-# 0 11 4
-# 4 11 0
-# 0 4 11
-# 5 4 6
-# 0 9 6
-# 5 4 6
-
-# 5 4 6
-# 0 9 6
-# 4_5_6_7_8_9_10_11_12_13_14_15
-# 4 5 6     9 10 11       14 15
+cList=[a,b,c]
+mList=[0,0,c]
+result=set()
+temp=[]
+def bucketC(mList):
+    for i,p in enumerate(mList):
+        for j,q in enumerate(mList):
+            if i!=j:
+                t=mList[:]
+                if cList[j]-q>=p:
+                    t[j]=q+p
+                    t[i]=0
+                else:
+                    t[i]=p-(cList[j]-q)
+                    t[j]=cList[j]
+                if not t[-1] in result and not t in temp:
+                    if t[0]==0:
+                        result.add(t[-1])
+                    temp.append(t)
+                    bucketC(t)
+bucketC(mList)                
+result=list(result)                    
+result.sort()
+            
 with open('milk3.out','w') as fout:
     out=''
     for e in result:

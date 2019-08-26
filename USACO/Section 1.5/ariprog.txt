@@ -35,7 +35,7 @@ for i in range(0,M+1):
             sList.add(i**2+j**2)
 #             print(i,j,i**2+j**2)
 
-
+sList=list(sList)
 t = []
 for e in sList:
     for s in sList:
