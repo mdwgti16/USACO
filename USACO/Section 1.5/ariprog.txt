@@ -3,65 +3,48 @@ ID: xggc1
 LANG: PYTHON3
 PROG: ariprog
 """
+import time
 def getKey(s):
     n1,n2=map(int,s.strip().split(" "))
-    return n2, n1
-
+    return n2,n1
 fin = open('ariprog.in','r')
 N,M = map(int,fin.readlines())
 
-# ['1 5 9 13 17 ',
-#  '37 41 45 49 53 ',
-#  '2 10 18 26 34 ',
-#  '29 37 45 53 61 ',
-#  '1 13 25 37 49 ',
-#  '5 17 29 41 53 ',
-#  '13 25 37 49 61 ',
-#  '17 29 41 53 65 ',
-#  '5 25 45 65 85 ',
-#  '2 26 50 74 98 ']
-
+t={}
+result=[]
 sList=set()
-result=set()
 cnt=0
 
-# for v in range(0,M+1,2):
 for i in range(0,M+1):
     for j in range(0,M+1):
-        if not i**2+j**2 in sList:
-            q,r=divmod(i**2+j**2,N-1)
-#             if q>0:
-#                 result.add(f'{r} {q}')
-            sList.add(i**2+j**2)
-#             print(i,j,i**2+j**2)
-
+        sList.add(i**2+j**2)
 sList=list(sList)
-t = []
-for e in sList:
-    for s in sList:
-        if e != 0 and s != 0:
-            if e>=N-1:
-                if s<e:
-                    q,r=divmod(e-s,N-1)
-                    if r==0 :
-                        t.append(f'{s} {q}')
-        else:
-            if e%(N-1)==0 and e!=0:
-                t.append(f'{s} {e//(N-1)}')
-                    
-for e in t:
-    s,d = map(int,e.split(' '))
-    for i in range(N):
-        temp=s+d*i
-        if not temp in sList:
-            break
-    else:
-        result.add(e)
-result=list(result)
+sList.sort()
+# c=0
+# start = time.time()  # 시작 시간 저장
+for s in range(len(sList)-(N-1)):
+    for j in range(s+1,len(sList)-(N-2)):
+        d=sList[j]-sList[s]
+        n=sList[j]+d
+        cnt=2
+        while n<=sList[-1]:
+#             c+=1
+            if n in sList:
+                cnt+=1
+            else:
+                break
+            
+            if cnt==N:
+                result.append(f'{sList[s]} {d}')
+                break
+                
+            n+=d         
+# print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
+# print(result,c)
 result.sort(key=getKey)
-
+                
 if len(result)==0:
-    result.append('NONE')
+    result.append("NONE")
 
 with open('ariprog.out','w') as fout:
     for e in result:
