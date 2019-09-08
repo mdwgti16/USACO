@@ -1,0 +1,28 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: numtri
+"""
+def getKey(s):
+    n1,n2=map(int,s.strip().split(" "))
+    return n2
+fin = open('numtri.in','r')
+n = int(fin.readline())
+nums=[ list(map(int,e.strip().split(" "))) for e in fin.readlines()]
+
+for i, line in enumerate(nums):
+    if i!=0:
+        for j,e in enumerate(line):
+            if j==0 :
+                nums[i][j]=nums[i][j]+nums[i-1][j]
+                continue
+            elif e==line[-1] :
+                nums[i][j]=nums[i][j]+nums[i-1][j-1]
+            if i!=n-1:
+                if nums[i][j]>=nums[i][j-1]:
+                    nums[i+1][j]+=nums[i][j]
+                else :
+                    nums[i+1][j]+=nums[i][j-1]
+
+with open('numtri.out','w') as fout:
+    fout.write(f'{max(nums[-1][:])}\n')
