@@ -1,0 +1,27 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: pprime
+"""
+def isPal(n):
+    if str(n)==str(n)[::-1]:
+        return True
+fin = open('pprime.in','r')
+a,b = map(int,fin.readline().strip().split(' '))
+pals=[]
+if a%2==0:
+    a+=1
+for n in range(a,b+1,2):
+    if isPal(n):
+        d=3
+        while True:
+            if n%d==0:
+                break
+            if n/d<d:
+                pals.append(n)
+                break
+            d+=2
+
+with open('pprime.out','w') as fout:
+    for e in pals:
+        fout.write(f'{e}\n')

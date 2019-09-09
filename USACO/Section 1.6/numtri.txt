@@ -3,9 +3,6 @@ ID: xggc1
 LANG: PYTHON3
 PROG: numtri
 """
-def getKey(s):
-    n1,n2=map(int,s.strip().split(" "))
-    return n2
 fin = open('numtri.in','r')
 n = int(fin.readline())
 nums=[ list(map(int,e.strip().split(" "))) for e in fin.readlines()]
