@@ -1,0 +1,74 @@
+"""
+ID: xggc1
+LANG: PYTHON3
+PROG: castle
+"""
+S=8
+E=4
+N=2
+W=1
+
+fin = open('castle.in','r')
+X,Y = map(int,fin.readline().strip().split(' '))
+rooms=[list(map(int,line.strip().split(' '))) for line in fin.readlines()]
+
+dsrt={}
+roomSize={}
+largestRoom=0
+rNum=1
+
+for i in range(Y):
+    for j in range(X):
+        dsrt[i,j]=0
+
+def getRoom(x,y,cnt):
+    if dsrt[y,x]!=0:
+        return
+    dsrt[y,x]=rNum
+    roomSize[rNum]+=1
+    t=rooms[y][x]
+    if not t&S and y+1>Y:
+        getRoom(x,y+1,cnt+1)
+        
+    if not t&E and x+1<X:
+        getRoom(x+1,y,cnt+1)
+        
+    if not t&N and y>0:
+        getRoom(x,y-1,cnt+1)
+        
+    if not t&W and x>0:
+        getRoom(x-1,y,cnt+1)
+
+for i in range(Y):
+    for j in range(X):
+        if not (i,j) in dsrt:
+            roomSize[rNum]=0
+            getRoom(j,i,1)
+            if roomSize[rNum]>largestRoom:
+                largestRoom=roomSize[rNum]
+            rNum+=1
+
+answer=[0,0,0,0]
+
+cRoom=0
+ax=0
+ay=0
+ac=''
+for x in range(X):
+    for y in range(Y-1,0,-1):
+        if y>0 and dsrt[y,x]!=dsrt[y-1,x]:
+            if cRoom < roomSize[dsrt[y-1,x]] + roomSize[dsrt[y,x]]:
+                ax=x
+                ay=y
+                ac='N'
+        if x+1<X and dsrt[y,x]!=dsrt[y,x+1]:
+            if cRoom < roomSize[dsrt[y,x+1]] + roomSize[dsrt[y,x]]:
+                ax=x
+                ay=y
+                ac='E'
+
+with open('castle.out','w') as fout:
+    fout.write(f'{rNum-1}\n')
+    fout.write(f'{largestRoom}\n')
+    fout.write(f'{cRoom}\n')
+    fout.write(f'{ay} {ax} {ac}\n')
